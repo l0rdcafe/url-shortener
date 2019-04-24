@@ -34,11 +34,12 @@ router.post("/shorturl/new", jsonParser, [check("url").isURL()], async (req, res
   }
 
   try {
-    const ip = await dnsLookup(req.body.url);
+    await dnsLookup(req.body.url);
     const result = await db.raw("INSERT INTO urls (original_url) values (?) RETURNING id", req.body.url);
     const { id } = result.rows[0];
     res.status(200).json({ original_url: req.body.url, short_url: id });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ error: "Bad DNS lookup" });
   }
 });
