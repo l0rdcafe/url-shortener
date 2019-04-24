@@ -39,8 +39,7 @@ router.post("/shorturl/new", jsonParser, [check("url").isURL()], async (req, res
     const { id } = result.rows[0];
     res.status(200).json({ original_url: req.body.url, short_url: id });
   } catch (err) {
-    console.log(err);
-    res.status(400).json({ error: "Bad DNS lookup" });
+    res.status(400).json({ error: "Bad DNS lookup", err });
   }
 });
 
